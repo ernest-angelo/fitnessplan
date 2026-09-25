@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
 import { router } from 'expo-router';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 export default function ProfileScreen() {
   const [profile, setProfile] = useState<any>(null);
@@ -18,7 +18,6 @@ export default function ProfileScreen() {
       setLoading(true);
       setErrorMsg('');
 
-      // 1. Get the currently authenticated user
       const {
         data: { user },
         error: userError,
@@ -30,7 +29,6 @@ export default function ProfileScreen() {
         return;
       }
 
-      // 2. If a user exists, query the profiles table
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -136,66 +134,39 @@ export default function ProfileScreen() {
         <Text style={styles.label}>Workout Duration (min):</Text>
         <Text style={styles.value}>{profile.workout_duration_min || 'N/A'}</Text>
       </View>
+
+      <Pressable 
+        style={styles.workoutsButton} 
+        onPress={() => router.push('/(app)/workouts')}
+      >
+        <Text style={styles.workoutsButtonText}>My Workouts</Text>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  setupButton: {
-    backgroundColor: '#007bff',
+  container: {flex: 1, padding: 20, backgroundColor: '#fff',},
+  centerContainer: { flex: 1,justifyContent: 'center', alignItems: 'center',padding: 20,backgroundColor: '#fff', },
+  title: {fontSize: 24,fontWeight: 'bold',marginBottom: 20,textAlign: 'center', },
+  subtitle: { fontSize: 16, color: '#666', textAlign: 'center', marginBottom: 20, },
+  setupButton: {backgroundColor: '#007bff',padding: 15,borderRadius: 8, alignItems: 'center',marginTop: 10, },
+  setupButtonText: {color: '#fff', fontSize: 16, fontWeight: '600', },
+  infoBox: {marginBottom: 16,paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: '#eee', },
+  label: { fontSize: 14, color: '#666',marginBottom: 4, },
+  value: {fontSize: 16,color: '#000', fontWeight: '500',},
+  errorText: {color: 'red',fontSize: 16, textAlign: 'center',  },
+  
+  workoutsButton: {
+    backgroundColor: '#28a745',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
   },
-  setupButtonText: {
+  workoutsButtonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
-  },
-  infoBox: {
-    marginBottom: 16,
-    paddingBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  label: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 4,
-  },
-  value: {
-    fontSize: 16,
-    color: '#000',
-    fontWeight: '500',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 16,
-    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
