@@ -1,5 +1,4 @@
-import { supabase } from '@/lib/supabase';
-import type { SessionStatus, WorkoutSetRow as DBWorkoutSetRow, WorkoutSessionRow as DBWorkoutSessionRow } from '@/types/db';
+import type { SessionStatus } from '@/types/db';
 
 export type WorkoutSessionRow = {
   id: string;

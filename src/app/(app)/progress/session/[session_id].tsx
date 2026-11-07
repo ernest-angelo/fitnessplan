@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Pressable, ScrollView } from 'react-native';
-import { useLocalSearchParams, useFocusEffect, router } from 'expo-router';
-import { supabase } from '@/lib/supabase';
 import dayjs from 'dayjs';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import React, { useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default function SessionDetailScreen() {
   const { session_id } = useLocalSearchParams();
