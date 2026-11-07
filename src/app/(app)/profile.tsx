@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { supabase } from '@/lib/supabase';
+import type { Profile } from '@/types/db';
 
 export default function ProfileScreen() {
-  const [profile, setProfile] = useState<any>(null);
+
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [noUser, setNoUser] = useState(false);
@@ -122,7 +124,7 @@ export default function ProfileScreen() {
 
       <View style={styles.infoBox}>
         <Text style={styles.label}>Experience Level:</Text>
-        <Text style={styles.value}>{profile.experience_level || 'N/A'}</Text>
+        <Text style={styles.value}>{profile.experience_level ? profile.experience_level.toLowerCase().replace(/\b\w/g, (c: string) => c.toUpperCase()) : 'N/A'}</Text>
       </View>
 
       <View style={styles.infoBox}>

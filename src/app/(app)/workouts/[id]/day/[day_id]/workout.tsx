@@ -108,7 +108,7 @@ export default function WorkoutExecutionScreen() {
       if (sessionIdParam) {
         const { data, error: sessionError } = await supabase
           .from('workout_sessions')
-          .select('id, user_id, plan_id, day_id, started_at, completed_at, duration_seconds, status')
+          .select('id, user_id, workout_plan_id, workout_day_id, started_at, completed_at, duration_seconds, status')
           .eq('id', sessionIdParam)
           .maybeSingle();
 
@@ -138,7 +138,7 @@ export default function WorkoutExecutionScreen() {
         return;
       }
 
-      if (activeSession.day_id !== dayId || activeSession.plan_id !== planId) {
+      if (activeSession.workout_day_id !== dayId || activeSession.workout_plan_id !== planId) {
         setError('This workout does not match the selected day.');
         return;
       }

@@ -1,14 +1,15 @@
 import { supabase } from '@/lib/supabase';
+import type { SessionStatus, WorkoutSetRow as DBWorkoutSetRow, WorkoutSessionRow as DBWorkoutSessionRow } from '@/types/db';
 
 export type WorkoutSessionRow = {
   id: string;
   user_id: string;
-  plan_id: string;
-  day_id: string;
+  workout_plan_id: string;
+  workout_day_id: string;
   started_at: string;
   completed_at: string | null;
   duration_seconds: number | null;
-  status: string;
+  status: SessionStatus;
 };
 
 export type WorkoutSetRow = {
@@ -16,9 +17,9 @@ export type WorkoutSetRow = {
   session_id: string;
   exercise_id: string;
   set_number: number;
-  weight: number | null;
-  reps: number | null;
-  completed: boolean | null;
+  weight: number;
+  reps: number;
+  completed: boolean;
 };
 
 export async function getAuthenticatedUserId(): Promise<
@@ -47,9 +48,9 @@ export async function ensureInProgressSession(
 
   const { data: existing, error: existingError } = await supabase
     .from('workout_sessions')
-    .select('id, user_id, plan_id, day_id, started_at, completed_at, duration_seconds, status')
+    .select('id, user_id, workout_plan_id, workout_day_id, started_at, completed_at, duration_seconds, status')
     .eq('user_id', auth.userId)
-    .eq('day_id', dayId)
+    .eq('workout_day_id', dayId)
     .eq('status', 'IN_PROGRESS')
     .order('started_at', { ascending: false })
     .limit(1);
@@ -68,12 +69,12 @@ export async function ensureInProgressSession(
     .from('workout_sessions')
     .insert({
       user_id: auth.userId,
-      plan_id: planId,
-      day_id: dayId,
+      workout_plan_id: planId,
+      workout_day_id: dayId,
       started_at: startedAt,
       status: 'IN_PROGRESS',
     })
-    .select('id, user_id, plan_id, day_id, started_at, completed_at, duration_seconds, status')
+    .select('id, user_id, workout_plan_id, workout_day_id, started_at, completed_at, duration_seconds, status')
     .single();
 
   if (insertError || !created) {

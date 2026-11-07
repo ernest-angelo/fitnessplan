@@ -41,7 +41,7 @@ export default function WorkoutSummaryScreen() {
 
       const { data: sessionData, error: sessionError } = await supabase
         .from('workout_sessions')
-        .select('id, user_id, plan_id, day_id, started_at, completed_at, duration_seconds, status')
+        .select('id, user_id, workout_plan_id, workout_day_id, started_at, completed_at, duration_seconds, status')
         .eq('id', sessionId)
         .maybeSingle();
 
@@ -64,7 +64,7 @@ export default function WorkoutSummaryScreen() {
 
       const [{ data: planData }, { data: dayData, error: dayError }, { data: setRows, error: setsError }] =
         await Promise.all([
-          supabase.from('workout_plans').select('name').eq('id', session.plan_id).maybeSingle(),
+          supabase.from('workout_plans').select('name').eq('id', session.workout_plan_id).maybeSingle(),
           supabase
             .from('workout_plan_days')
             .select(
@@ -73,7 +73,7 @@ export default function WorkoutSummaryScreen() {
                  exercise_id
                )`
             )
-            .eq('id', session.day_id)
+            .eq('id', session.workout_day_id)
             .maybeSingle(),
           supabase
             .from('workout_sets')

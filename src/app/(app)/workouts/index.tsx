@@ -50,7 +50,7 @@ export default function MyPlansScreen() {
       const { data, error: fetchError } = await supabase
         .from('workout_plans')
         .select('id, name, description, goal, difficulty, visibility')
-        .eq('user_id', user.id)
+        .eq('owner_id', user.id)
         .order('created_at', { ascending: false });
 
       if (fetchError) {

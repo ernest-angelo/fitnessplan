@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
 import { supabase } from '@/lib/supabase';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [displayName, setDisplayName] = useState('');
-  
+
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-const validateEmail = (email: string) => {
-  return /\S+@\S+\.\S+/.test(email);
-};
+  const validateEmail = (email: string) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
 
   const handleRegister = async () => {
     if (loading) return;
@@ -66,6 +66,9 @@ const validateEmail = (email: string) => {
 
       if (data.user && data.session) {
         // Case A: Email confirmation not required / already confirmed
+        // Store the session so that RLS sees auth.uid()
+        await supabase.auth.setSession(data.session);
+        console.log('Session stored for user', data.user?.id);
         const { error: profileError } = await supabase
           .from('profiles')
           .insert({
@@ -75,6 +78,13 @@ const validateEmail = (email: string) => {
           });
 
         if (profileError) {
+          // Log detailed Supabase error (do not expose credentials)
+          console.error('Profile insert error:', {
+            message: profileError.message,
+            code: profileError.code,
+            details: profileError.details,
+            hint: profileError.hint,
+          });
           if (profileError.code === '23505') { // unique violation in Postgres
             setErrorMessage('Username is already taken. Please try another one.');
           } else {
@@ -100,7 +110,7 @@ const validateEmail = (email: string) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Register</Text>
-      
+
       {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       {!!successMessage && <Text style={styles.success}>{successMessage}</Text>}
 
@@ -137,8 +147,8 @@ const validateEmail = (email: string) => {
         editable={!loading}
       />
 
-      <Pressable 
-        style={[styles.button, loading && styles.buttonDisabled]} 
+      <Pressable
+        style={[styles.button, loading && styles.buttonDisabled]}
         onPress={handleRegister}
         disabled={loading}
       >

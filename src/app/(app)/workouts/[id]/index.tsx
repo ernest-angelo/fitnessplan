@@ -55,6 +55,8 @@ export default function PlanDetailsScreen() {
   const [error, setError] = useState('');
   const [inProgressByDay, setInProgressByDay] = useState<Record<string, string>>({});
   const [startingDayId, setStartingDayId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
 
   useFocusEffect(
     useCallback(() => {
@@ -92,13 +94,14 @@ export default function PlanDetailsScreen() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
+      setUserId(user?.id ?? null);
 
       if (user) {
         const { data: activeSessions, error: sessionError } = await supabase
           .from('workout_sessions')
-          .select('id, day_id')
+          .select('id, workout_day_id')
           .eq('user_id', user.id)
-          .eq('plan_id', id)
+          .eq('workout_plan_id', id)
           .eq('status', 'IN_PROGRESS');
 
         if (sessionError) {
@@ -106,7 +109,7 @@ export default function PlanDetailsScreen() {
         } else {
           const map: Record<string, string> = {};
           for (const row of activeSessions ?? []) {
-            map[row.day_id as string] = row.id as string;
+            map[row.workout_day_id as string] = row.id as string;
           }
           setInProgressByDay(map);
         }
@@ -119,6 +122,8 @@ export default function PlanDetailsScreen() {
   };
 
   // ── Delete Plan ─────────────────────────────────────────────────────────────
+
+  const [copyLoading, setCopyLoading] = useState(false);
 
   const handleDeletePlan = () => {
     Alert.alert(
@@ -151,6 +156,86 @@ export default function PlanDetailsScreen() {
       router.replace('/(app)/workouts');
     } catch {
       Alert.alert('Error', 'An unexpected error occurred.');
+    }
+  };
+
+  const handleCopyPlan = async () => {
+    try {
+      setCopyLoading(true);
+      const authRes = await supabase.auth.getUser();
+      const user = authRes.data.user;
+      if (!user) {
+        Alert.alert('Error', 'You must be logged in to copy a plan.');
+        setCopyLoading(false);
+        return;
+      }
+      // Create new plan
+      const { data: newPlan, error: planError } = await supabase
+        .from('workout_plans')
+        .insert([
+          {
+            source_plan_id: plan.id,
+            owner_id: user.id,
+            name: `${plan.name} (Copy)`,
+            description: plan.description,
+            goal: plan.goal,
+            difficulty: plan.difficulty,
+            visibility: 'PRIVATE',
+          },
+        ])
+        .select('id')
+        .single();
+      if (planError) throw planError;
+      const newPlanId = newPlan.id;
+
+      // Map old day IDs to new day IDs
+      const dayIdMap = {};
+      for (const day of plan.workout_plan_days ?? []) {
+        const { data: newDay, error: dayError } = await supabase
+          .from('workout_plan_days')
+          .insert([
+            {
+              workout_plan_id: newPlanId,
+              name: day.name,
+              day_number: day.day_number,
+            },
+          ])
+          .select('id')
+          .single();
+        if (dayError) throw dayError;
+        dayIdMap[day.id] = newDay.id;
+        // Copy exercises for this day
+        const exercises = day.workout_exercises ?? [];
+        for (const we of exercises) {
+          const { error: exError } = await supabase
+            .from('workout_exercises')
+            .insert([
+              {
+                day_id: newDay.id,
+                exercise_id: we.exercise_id,
+                order_index: we.order_index,
+                target_sets: we.target_sets,
+                target_reps: we.target_reps,
+                rest_seconds: we.rest_seconds,
+                notes: we.notes,
+              },
+            ]);
+          if (exError) throw exError;
+        }
+      }
+
+      Alert.alert('Success', 'Plan copied successfully.', [
+        { text: 'OK', onPress: () => router.replace(`/(app)/workouts/${newPlanId}`) },
+      ]);
+    } catch (e) {
+      console.error(e);
+      Alert.alert('Error', e?.message || 'Failed to copy plan.');
+      // Cleanup partially created plan if exists
+      if (newPlan?.id) {
+        await supabase.from('workout_plans').delete().eq('id', newPlan.id);
+      }
+    } finally {
+      setCopyLoading(false);
     }
   };
 
@@ -281,6 +366,11 @@ export default function PlanDetailsScreen() {
           <Pressable style={styles.deletePlanButton} onPress={handleDeletePlan}>
             <Text style={styles.deletePlanButtonText}>Delete Plan</Text>
           </Pressable>
+          {plan.visibility === 'PUBLIC' && plan.owner_id !== userId && (
+            <Pressable style={styles.copyPlanButton} onPress={handleCopyPlan} disabled={copyLoading}>
+              <Text style={styles.copyPlanButtonText}>Copy Plan</Text>
+            </Pressable>
+          )}
         </View>
       </View>
 

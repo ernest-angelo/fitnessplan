@@ -12,13 +12,28 @@ import { router } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 
 // Valid enum values that must match the database schema.
-const GOAL_OPTIONS = ['build_muscle', 'lose_weight', 'improve_endurance', 'increase_strength', 'general_fitness'] as const;
-const DIFFICULTY_OPTIONS = ['beginner', 'intermediate', 'advanced'] as const;
-const VISIBILITY_OPTIONS = ['private', 'public'] as const;
+const GOAL_OPTIONS = [
+  { label: 'Build Muscle', value: 'MUSCLE_GAIN' },
+  { label: 'Lose Weight', value: 'FAT_LOSS' },
+  { label: 'Get Stronger', value: 'STRENGTH' },
+  { label: 'Improve Endurance', value: 'ENDURANCE' },
+  { label: 'General Fitness', value: 'GENERAL_FITNESS' }
+] as const;
 
-type GoalValue = (typeof GOAL_OPTIONS)[number] | '';
-type DifficultyValue = (typeof DIFFICULTY_OPTIONS)[number] | '';
-type VisibilityValue = (typeof VISIBILITY_OPTIONS)[number] | '';
+const DIFFICULTY_OPTIONS = [
+  { label: 'Beginner', value: 'BEGINNER' },
+  { label: 'Intermediate', value: 'INTERMEDIATE' },
+  { label: 'Advanced', value: 'ADVANCED' }
+] as const;
+
+const VISIBILITY_OPTIONS = [
+  { label: 'Private', value: 'PRIVATE' },
+  { label: 'Public', value: 'PUBLIC' }
+] as const;
+
+type GoalValue = (typeof GOAL_OPTIONS)[number]['value'] | '';
+type DifficultyValue = (typeof DIFFICULTY_OPTIONS)[number]['value'] | '';
+type VisibilityValue = (typeof VISIBILITY_OPTIONS)[number]['value'] | '';
 
 function OptionPicker<T extends string>({
   label,
@@ -27,7 +42,7 @@ function OptionPicker<T extends string>({
   onSelect,
 }: {
   label: string;
-  options: readonly T[];
+  options: readonly { label: string; value: T }[];
   value: T | '';
   onSelect: (v: T) => void;
 }) {
@@ -37,14 +52,14 @@ function OptionPicker<T extends string>({
       <View style={styles.optionRow}>
         {options.map((opt) => (
           <Pressable
-            key={opt}
-            style={[styles.optionChip, value === opt && styles.optionChipSelected]}
-            onPress={() => onSelect(opt)}
+            key={opt.value}
+            style={[styles.optionChip, value === opt.value && styles.optionChipSelected]}
+            onPress={() => onSelect(opt.value)}
           >
             <Text
-              style={[styles.optionChipText, value === opt && styles.optionChipTextSelected]}
+              style={[styles.optionChipText, value === opt.value && styles.optionChipTextSelected]}
             >
-              {opt.replace(/_/g, ' ')}
+              {opt.label}
             </Text>
           </Pressable>
         ))}
@@ -58,7 +73,7 @@ export default function CreatePlanScreen() {
   const [description, setDescription] = useState('');
   const [goal, setGoal] = useState<GoalValue>('');
   const [difficulty, setDifficulty] = useState<DifficultyValue>('');
-  const [visibility, setVisibility] = useState<VisibilityValue>('private');
+  const [visibility, setVisibility] = useState<VisibilityValue>('PRIVATE');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -89,7 +104,7 @@ export default function CreatePlanScreen() {
       const { data, error: insertError } = await supabase
         .from('workout_plans')
         .insert({
-          user_id: user.id,
+          owner_id: user.id,
           name: name.trim(),
           description: description.trim() || null,
           goal: goal || null,

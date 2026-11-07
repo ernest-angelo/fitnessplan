@@ -191,11 +191,26 @@ export default function AddExerciseScreen() {
         }
       } else {
         // ── Add mode: INSERT new workout_exercises row ─────────────────────────
+        // Determine the next order_index for this day
+        const { data: existingExercises, error: fetchError } = await supabase
+          .from('workout_exercises')
+          .select('order_index')
+          .eq('workout_day_id', day_id);
+
+        if (fetchError) {
+          setError(fetchError.message || 'Failed to determine exercise order.');
+          return;
+        }
+
+        const existingIndexes = (existingExercises ?? []).map((e: any) => e.order_index);
+        const orderIndex = Math.max(-1, ...existingIndexes) + 1;
+
         const { error: insertError } = await supabase
           .from('workout_exercises')
           .insert({
-            day_id,
+            workout_day_id: day_id,
             exercise_id: selectedExercise.id,
+            order_index: orderIndex,
             target_sets: parseInt(targetSets, 10),
             target_reps: parseInt(targetReps, 10),
             rest_seconds: parseInt(restSeconds, 10),

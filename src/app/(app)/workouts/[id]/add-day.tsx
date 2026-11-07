@@ -105,7 +105,7 @@ export default function AddDayScreen() {
         const { error: insertError } = await supabase
           .from('workout_plan_days')
           .insert({
-            plan_id: planId,
+            workout_plan_id: planId,
             name: name.trim(),
             day_number: parseInt(dayNumber, 10),
           });
