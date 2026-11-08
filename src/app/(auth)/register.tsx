@@ -1,4 +1,3 @@
-import { supabase } from '@/lib/supabase';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -8,100 +7,29 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [displayName, setDisplayName] = useState('');
-
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const validateEmail = (email: string) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
+
 
   const handleRegister = async () => {
     if (loading) return;
-
     setErrorMessage('');
     setSuccessMessage('');
-
-    if (!email || !password || !username || !displayName) {
-      setErrorMessage('All fields are required.');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setErrorMessage('Please enter a valid email address.');
-      return;
-    }
-
-    if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters.');
-      return;
-    }
-
-    if (username.length < 3) {
-      setErrorMessage('Username must be at least 3 characters.');
-      return;
-    }
-
-    const normalizedUsername = username.toLowerCase();
-
     setLoading(true);
 
+    // Saya menghapus autentikasi supabase bagian pengisian data untuk register supaya dapat langsung lanjut ke next page
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            username: normalizedUsername,
-            display_name: displayName,
-          },
-        },
-      });
+      // Skip autentikasi Supabase
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      if (error) {
-        setErrorMessage(error.message || 'Registration failed. Please try again.');
-        return;
-      }
+      // Routing langsung ke profile
+      router.replace('/(app)/profile');
 
-      if (data.user && data.session) {
-        // Case A: Email confirmation not required / already confirmed
-        // Store the session so that RLS sees auth.uid()
-        await supabase.auth.setSession(data.session);
-        console.log('Session stored for user', data.user?.id);
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: data.user.id,
-            username: normalizedUsername,
-            display_name: displayName,
-          });
-
-        if (profileError) {
-          // Log detailed Supabase error (do not expose credentials)
-          console.error('Profile insert error:', {
-            message: profileError.message,
-            code: profileError.code,
-            details: profileError.details,
-            hint: profileError.hint,
-          });
-          if (profileError.code === '23505') { // unique violation in Postgres
-            setErrorMessage('Username is already taken. Please try another one.');
-          } else {
-            setErrorMessage('Registration succeeded, but profile creation failed.');
-          }
-          return;
-        }
-
-        router.replace('/');
-      } else if (data.user && !data.session) {
-        // Case B: Email confirmation required
-        setSuccessMessage('Registration successful! Please check your email to confirm your account before logging in.');
-      } else {
-        setErrorMessage('Unexpected registration state. Please try again.');
-      }
     } catch (e) {
-      setErrorMessage('An unexpected error occurred. Please try again later.');
+      console.error('Navigation error:', e);
+      setErrorMessage('Sistem Error');
     } finally {
       setLoading(false);
     }
