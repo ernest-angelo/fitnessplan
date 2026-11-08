@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import { supabase } from '@/lib/supabase';
+import { useState } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -9,130 +8,36 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const validateEmail = (email: string) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
-
+  // Semua autentikasi database sudah dihilangkan
   const handleLogin = async () => {
     if (loading) return;
 
     setErrorMessage('');
-
-    if (!email || !password) {
-      setErrorMessage('Please enter both email and password.');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setErrorMessage('Please enter a valid email address.');
-      return;
-    }
-
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      // Skip autentikasi Supabase
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      if (error) {
-        if (error.message.includes('Invalid login credentials')) {
-          setErrorMessage('Invalid email or password.');
-        } else if (error.message.includes('Email not confirmed')) {
-          setErrorMessage('Please confirm your email address before logging in.');
-        } else {
-          setErrorMessage(error.message || 'Login failed. Please try again.');
-        }
-        return;
-      }
+      // Routing langsung ke profile
+      router.replace('/(app)/profile');
 
-      if (data.session && data.user) {
-        // Step 3: Fetch the user's profile
-        let { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', data.user.id)
-          .single();
-
-        // Task 3: Handle missing profile safely
-        if (profileError && profileError.code === 'PGRST116') {
-          // No profile found. Try to create one safely.
-          console.warn('Profile missing for user, attempting to create one safely:', data.user.id);
-          const { data: newProfile, error: insertError } = await supabase
-            .from('profiles')
-            .insert({
-              id: data.user.id,
-              username: data.user.email?.split('@')[0] || `user_${Date.now()}`,
-              display_name: 'New User'
-            })
-            .select()
-            .single();
-            
-          if (insertError) {
-            console.error('Database/profile problem: Could not create missing profile for user.', insertError);
-            setErrorMessage('Login succeeded, but profile is missing and could not be created. Please contact support.');
-            setLoading(false);
-            return;
-          }
-          profile = newProfile;
-          profileError = null;
-        } else if (profileError) {
-          console.error('Error fetching profile during login:', profileError);
-          setErrorMessage('An error occurred checking your profile status.');
-          setLoading(false);
-          return;
-        }
-
-        // Step 4: Evaluate profile completeness
-        let equipmentArr = [];
-        if (profile?.equipment) {
-          if (Array.isArray(profile.equipment)) {
-            equipmentArr = profile.equipment;
-          } else if (typeof profile.equipment === 'string') {
-            try {
-              equipmentArr = JSON.parse(profile.equipment);
-            } catch (e) {
-              if (profile.equipment.startsWith('{') && profile.equipment.endsWith('}')) {
-                const content = profile.equipment.slice(1, -1);
-                equipmentArr = content ? content.split(',') : [];
-              } else {
-                equipmentArr = [profile.equipment]; // just a string
-              }
-            }
-          }
-        }
-
-        const isComplete = 
-          profile &&
-          profile.goal != null &&
-          profile.experience_level != null &&
-          profile.workout_days_per_week != null &&
-          profile.workout_duration_min != null &&
-          equipmentArr.length > 0;
-
-        // Step 5: Route accordingly
-        if (isComplete) {
-          router.replace('/(app)/profile');
-        } else {
-          router.replace('/(auth)/onboarding');
-        }
-      } else {
-        setErrorMessage('Unexpected login state. Please try again.');
-      }
     } catch (e) {
-      console.error('Unexpected login error:', e);
-      setErrorMessage('An unexpected error occurred. Please check your network connection.');
+      console.error('Navigation error:', e);
+      setErrorMessage('Sistem Error');
     } finally {
       setLoading(false);
     }
   };
 
+  // UI Login
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
 
-      {!!errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
+      {!!errorMessage && (
+        <Text style={styles.error}>{errorMessage}</Text>
+      )}
 
       <TextInput
         style={styles.input}
@@ -153,8 +58,8 @@ export default function LoginScreen() {
         editable={!loading}
       />
 
-      <Pressable 
-        style={[styles.button, loading && styles.buttonDisabled]} 
+      <Pressable
+        style={[styles.button, loading && styles.buttonDisabled]}
         onPress={handleLogin}
         disabled={loading}
       >
@@ -168,6 +73,7 @@ export default function LoginScreen() {
   );
 }
 
+// Styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
