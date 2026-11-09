@@ -53,7 +53,9 @@ Kenapa saya menggunakan router.replace sedangkan router.push karena Router.repla
 Analisis Kebutuhan: di README. Tuliskan masalah, target pengguna, minimal 5 
 kebutuhan pengguna, tabel pemetaan kebutuhan ke layar dan komponen, serta alasan keputusan desain dan 
 rencana pengembangan.
+
 Saya cantumkan notion yang saya gunakan untuk merekap chat dari ChatGPT saya dulu = https://app.notion.com/p/Hybrid-Application-3df5ee480a9180caa447f360326e2f3c?source=copy_link
+Isi notion disini mulai dari ideate, reply dari gpt, hingga structure + sprint yang ada tapi masih belum disesuaikan lagi.
 
 Apa masalah yang saya ambil :
 Permasalahan : Aku sering melihat orang orang diluar sana yang memiliki atau membil membership gym atau orang orang yang memiliki dream physique tapi kebanyakan dari mereka sering kebingungan disaat ingin memulai terkadang mereka sudah memiliki semangat untuk berangkat pergi ke Gym tetapi sesudah sampai gym, Seringkali aku lihat banyak orang yang baru datang ke gym untuk latihan tapi hanya tahu “oh aku hari ini latihan chest” dan di saat dia memulai workout, semua gerakan yang dia lakukan semuanya asal yang dia tahu hanya oh latihan yang barusan aku lakuin itu adalah latihan untuk chest.
@@ -73,3 +75,96 @@ Saya akan pakai 6 Kebutuhan menurut sepemahaman saya =
 5.	Pengguna dapat mengetahui informasi dan panduan latihan karena	pengguna membutuhkan arahan atau panduan agar dapat memahami cara melakukan latihan dengan benar.
 6. Pengguna dapat berpindah antarhalaman dengan mudah karena	pengguna membutuhkan navigasi yang sederhana dan mudah dipahami sehingga tidak menghambat disaat mereka melakukan latihan.
 
+Tabel pemetaan kebutuhan ke layar dan komponen
+1. Registrasi dan Login
+Halaman: Login / Register
+Komponen: TextInput, Pressable, ActivityIndicator
+Implementasi: Menyediakan formulir untuk memasukkan email dan password serta tombol untuk melanjutkan ke halaman utama.
+
+2. Melihat Daftar Latihan
+Halaman: Home
+Komponen: WorkoutCard
+Implementasi: Menampilkan daftar latihan yang tersedia beserta informasi singkat untuk membantu pengguna memilih latihan.
+
+3. Melihat Detail Latihan
+Halaman: Workout Detail
+Komponen: WorkoutInfo, WorkoutGuide
+Implementasi: Menampilkan informasi lengkap mengenai latihan yang dipilih, termasuk deskripsi, durasi, dan tingkat kesulitan.
+
+4. Melihat Progres Aktivitas
+Halaman: Home dan Profile
+Komponen: StatCard, ProgressBar
+Implementasi: Menampilkan ringkasan aktivitas olahraga dan statistik perkembangan latihan pengguna.
+
+5. Mendapatkan Informasi Panduan Latihan
+Halaman: Workout Detail
+Komponen: WorkoutGuide
+Implementasi: Menyediakan informasi dan instruksi mengenai cara melakukan latihan.
+
+6. Navigasi yang Mudah
+Halaman: Seluruh halaman aplikasi
+Komponen: Expo Router
+Implementasi: Memungkinkan pengguna berpindah antarhalaman melalui sistem navigasi aplikasi.
+
+Beberapa keputusan teknis dan desain yang digunakan dalam pengembangan Fitness Planner adalah:
+React Native: Dipilih karena memungkinkan pengembangan aplikasi Android dan iOS menggunakan satu basis kode sehingga proses pengembangan lebih efisien.
+Expo: Digunakan untuk mempermudah proses konfigurasi, pengembangan, dan pengujian aplikasi React Native.
+TypeScript: Digunakan untuk memberikan sistem pemeriksaan tipe data sehingga membantu mengurangi kesalahan dalam pengembangan aplikasi.
+Expo Router: Digunakan sebagai sistem navigasi berbasis file yang mempermudah pengelolaan perpindahan antarhalaman.
+Reusable Components: Komponen dibuat agar dapat digunakan kembali pada beberapa halaman sehingga mengurangi duplikasi kode dan mempermudah pemeliharaan aplikasi.
+Static Data: Data latihan menggunakan dummy data karena aplikasi merupakan prototipe yang belum membutuhkan integrasi database maupun backend.
+Simple User Interface: Antarmuka dirancang sederhana agar pengguna dapat memahami informasi dan menggunakan fitur aplikasi dengan mudah.
+
+Berikut adalah rencana pengembangan untuk awalan
+Hasil dibawah adalah hasil ringkasan dari ringkasan chat gpt sebelumnya untuk bagian MVP yang sudah saya simpan di link notion di bawah =
+https://app.notion.com/p/Summarize-From-Reply-0-1-3e05ee480a9180e8a66fff0ed1a16f2e?source=copy_link
+
+Rencana Pengembangan (Future Development)
+Fitness Planner dirancang untuk berkembang menjadi sebuah Fitness Ecosystem yang menggabungkan fitur perencanaan latihan, pencatatan aktivitas olahraga, pemantauan progres, dan interaksi sosial. Pengembangan aplikasi akan dilakukan secara bertahap dengan memprioritaskan fitur utama terlebih dahulu sebelum menambahkan fitur yang lebih kompleks.
+
+Phase 1 – Core Workout Planner (MVP)
+Mengembangkan fitur utama yang memungkinkan pengguna membuat dan mengelola rencana latihan secara mandiri.
+Fitur yang direncanakan:
+Membuat dan mengelola Workout Plan.
+Menentukan jadwal latihan berdasarkan hari.
+Memilih latihan dari daftar Exercise.
+Mengatur jumlah Sets, Reps, Rest Duration, dan Notes.
+Melihat daftar serta detail Workout Plan.
+
+Phase 2 – Workout Execution & Tracking
+Mengembangkan fitur untuk membantu pengguna menjalankan latihan sekaligus mencatat hasil aktivitas olahraga.
+Fitur yang direncanakan:
+Menampilkan jadwal latihan berdasarkan hari.
+Mencatat beban dan jumlah repetisi setiap set.
+Menyelesaikan dan menyimpan sesi latihan.
+Menghitung durasi serta total volume latihan.
+Menampilkan riwayat dan perkembangan aktivitas olahraga.
+
+Phase 3 – Workout Discovery & Social Features
+Mengembangkan fitur komunitas yang memungkinkan pengguna menemukan program latihan dari pengguna lain, khususnya Personal Trainer, Athlete, dan Fitness Creator.
+Fitur yang direncanakan:
+Explore untuk menemukan Workout Plan.
+Membagikan Workout Plan kepada pengguna lain.
+Fitur Copy Plan untuk menyalin dan menyesuaikan program latihan.
+Membuat postingan mengenai aktivitas olahraga.
+Interaksi sosial melalui Like, Comment, dan Follow.
+Sistem verifikasi akun untuk Trainer, Athlete, dan Creator.
+
+Phase 4 – Personalization & AI Integration
+Mengembangkan sistem rekomendasi latihan yang lebih personal berdasarkan profil, kebutuhan, dan aktivitas pengguna.
+Fitur yang direncanakan:
+Menentukan tujuan latihan seperti Build Muscle, Lose Fat, dan Get Stronger.
+Menentukan Experience Level pengguna.
+Mengatur frekuensi dan durasi latihan.
+Menentukan peralatan olahraga yang tersedia.
+Memberikan rekomendasi Workout Plan berdasarkan preferensi pengguna.
+Mengembangkan AI untuk memberikan rekomendasi latihan yang lebih personal berdasarkan profil dan riwayat aktivitas.
+
+Phase 5 – Fitness Ecosystem Expansion
+Mengembangkan aplikasi menjadi ekosistem kebugaran yang lebih lengkap dengan menghubungkan fitur Planner, Social, dan Creator.
+Pengembangan lanjutan meliputi:
+Pengembangan profil dan portofolio Fitness Creator.
+Sistem publikasi program latihan dari Trainer dan Athlete.
+Peningkatan sistem komunitas dan interaksi pengguna.
+Pengembangan fitur komunikasi antar pengguna.
+Personalisasi pengalaman pengguna berdasarkan aktivitas dan preferensi.
