@@ -46,3 +46,30 @@ Navigation merupakan mekanisme atau sistem perpindahan antarhalaman dalam aplika
 Contoh disini saya ambil dari (auth)/register.tsx
 router.replace('/(tabs)');
 Kenapa saya menggunakan router.replace sedangkan router.push karena Router.replace lebih cocok untuk perpindahan dari page register/login ke home page karena dengan menggunakan router.replace pengguna tidak bisa kembali ke halaman sebelumnya menggunakan tombol Back browser karena halaman tersebut sudah ditimpa/dihapus dari riwayat sedangkan jika menggunakan router.push pengguna dapat menggunakan tombol back browser lalu kembali ke halaman sebelumnya
+
+
+
+
+Analisis Kebutuhan: di README. Tuliskan masalah, target pengguna, minimal 5 
+kebutuhan pengguna, tabel pemetaan kebutuhan ke layar dan komponen, serta alasan keputusan desain dan 
+rencana pengembangan.
+Saya cantumkan notion yang saya gunakan untuk merekap chat dari ChatGPT saya dulu = https://app.notion.com/p/Hybrid-Application-3df5ee480a9180caa447f360326e2f3c?source=copy_link
+
+Apa masalah yang saya ambil :
+Permasalahan : Aku sering melihat orang orang diluar sana yang memiliki atau membil membership gym atau orang orang yang memiliki dream physique tapi kebanyakan dari mereka sering kebingungan disaat ingin memulai terkadang mereka sudah memiliki semangat untuk berangkat pergi ke Gym tetapi sesudah sampai gym, Seringkali aku lihat banyak orang yang baru datang ke gym untuk latihan tapi hanya tahu “oh aku hari ini latihan chest” dan di saat dia memulai workout, semua gerakan yang dia lakukan semuanya asal yang dia tahu hanya oh latihan yang barusan aku lakuin itu adalah latihan untuk chest.
+Case lainnya pun juga ada dimana orang tersebut sudah memulai ngegym tapi bingung dengan workout split/routines atau singkatnya workout plan mereka seperti apa sehingga akhirnya dia memilih untuk membuka tiktok asal pilih workout plan / hanya mengikuti workout plan yang sedang ngetrend saat itu. Sehingga mereka hanya berlatih tanpa tahu tujuannya apa, kenapa kok latihannya begitu, apa yang dilatih.
+
+Target pengguna yang saya ambil adalah :
+Mahasiswa / Pelajar
+Athlete
+Content Creator atau sport enthusiast
+Pemula di Gym
+
+Saya akan pakai 6 Kebutuhan menurut sepemahaman saya =
+1.	Pengguna dapat melakukan Register dan Login karena pengguna membutuhkan halaman untuk masuk atau mendaftar ke aplikasi.
+2. Pengguna dapat melihat daftar latihan karena pengguna membutuhkan informasi mengenai latihan yang tersedia di gym mereka dengan yang ada dalam list daftar latihan aplikasi.
+3.	Pengguna dapat melihat detail latihan karena pengguna membutuhkan informasi lengkap seperti deskripsi, durasi, dan tingkat kesulitan latihan yang mereka lakukan.
+4.	Pengguna dapat melihat progres aktivitas olahraga karena	pengguna akan membutuhkan ringkasan aktivitas untuk mengetahui perkembangan latihan mereka.
+5.	Pengguna dapat mengetahui informasi dan panduan latihan karena	pengguna membutuhkan arahan atau panduan agar dapat memahami cara melakukan latihan dengan benar.
+6. Pengguna dapat berpindah antarhalaman dengan mudah karena	pengguna membutuhkan navigasi yang sederhana dan mudah dipahami sehingga tidak menghambat disaat mereka melakukan latihan.
+
