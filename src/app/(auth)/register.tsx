@@ -106,13 +106,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#000000ff',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
   },
   buttonDisabled: {
-    backgroundColor: '#a0c4ff',
+    backgroundColor: '#000000ff',
   },
   buttonText: {
     color: '#fff',

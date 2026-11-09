@@ -5,7 +5,6 @@
 
 
 Link penggunaan AI saya untuk debug = https://chatgpt.com/share/6af0c505-7dd4-83ec-9ce6-6abca58acedc
-Berikut adalah Link penggunaan ChatGPT saya yang lain = https://chatgpt.com/share/6af212de-a2f4-83ec-aeef-9e9a1aee8bf1
 Berikut juga draft link notion yang saya pakai untuk menyimpan draft seluruh perencanaan saya yang dibantu ai = https://app.notion.com/p/Hybrid-Application-3df5ee480a9180caa447f360326e2f3c?source=copy_link
 
-Link AI Declaration Form saya = 
+Link AI Declaration Form saya = https://drive.google.com/drive/folders/1PQUAv3S4SdRmQUevxO3AWVRJ7o0F4-oi?usp=sharing

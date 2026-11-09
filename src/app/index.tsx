@@ -12,7 +12,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Fitness Planner</Text>
+      <Text style={styles.title}>StayFit</Text>
 
       <Text style={styles.subtitle}>
         Your workout. Your progress.
