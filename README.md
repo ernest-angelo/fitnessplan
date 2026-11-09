@@ -1,4 +1,3 @@
-Link penggunaan AI saya= https://chatgpt.com/share/6af0c505-7dd4-83ec-9ce6-6abca58acedc
 
 Penjelasan Konsep: di README, 300–500 kata. Jelaskan cara kerja React Native, minimal 
 3 keunggulannya untuk aplikasi hybrid, serta komponen, props, state, dan navigasi dengan contoh kode 
@@ -116,55 +115,53 @@ Static Data: Data latihan menggunakan dummy data karena aplikasi merupakan proto
 Simple User Interface: Antarmuka dirancang sederhana agar pengguna dapat memahami informasi dan menggunakan fitur aplikasi dengan mudah.
 
 Berikut adalah rencana pengembangan untuk awalan
-Hasil dibawah adalah hasil ringkasan dari ringkasan chat gpt sebelumnya untuk bagian MVP yang sudah saya simpan di link notion di bawah =
+Hasil dibawah adalah hasil ringkasan yang saya ambil dari ringkasan chat gpt sebelumnya untuk bagian MVP yang sudah saya simpan di link notion di bawah =
 https://app.notion.com/p/Summarize-From-Reply-0-1-3e05ee480a9180e8a66fff0ed1a16f2e?source=copy_link
 
 Rencana Pengembangan (Future Development)
-Fitness Planner dirancang untuk berkembang menjadi sebuah Fitness Ecosystem yang menggabungkan fitur perencanaan latihan, pencatatan aktivitas olahraga, pemantauan progres, dan interaksi sosial. Pengembangan aplikasi akan dilakukan secara bertahap dengan memprioritaskan fitur utama terlebih dahulu sebelum menambahkan fitur yang lebih kompleks.
-
 Phase 1 – Core Workout Planner (MVP)
-Mengembangkan fitur utama yang memungkinkan pengguna membuat dan mengelola rencana latihan secara mandiri.
+Mengembangkan fitur utama yang memungkinkan user membuat dan mengelola rencana latihan secara mandiri.
 Fitur yang direncanakan:
-Membuat dan mengelola Workout Plan.
-Menentukan jadwal latihan berdasarkan hari.
-Memilih latihan dari daftar Exercise.
-Mengatur jumlah Sets, Reps, Rest Duration, dan Notes.
-Melihat daftar serta detail Workout Plan.
+1. Membuat dan mengelola Workout Plan.
+2. Menentukan jadwal latihan berdasarkan hari.
+3. Memilih latihan dari daftar Exercise.
+4. Mengatur jumlah Sets, Reps, Rest Duration, dan Notes.
+5. Melihat daftar serta detail Workout Plan.
 
 Phase 2 – Workout Execution & Tracking
-Mengembangkan fitur untuk membantu pengguna menjalankan latihan sekaligus mencatat hasil aktivitas olahraga.
+Mengembangkan fitur untuk membantu user menjalankan latihan sekaligus mencatat hasil aktivitas olahraga.
 Fitur yang direncanakan:
-Menampilkan jadwal latihan berdasarkan hari.
-Mencatat beban dan jumlah repetisi setiap set.
-Menyelesaikan dan menyimpan sesi latihan.
-Menghitung durasi serta total volume latihan.
-Menampilkan riwayat dan perkembangan aktivitas olahraga.
+1. Menampilkan jadwal latihan berdasarkan hari.
+2. Mencatat beban dan jumlah repetisi setiap set.
+3. Menyelesaikan dan menyimpan sesi latihan.
+4. Menghitung durasi serta total volume latihan.
+5. Menampilkan riwayat dan perkembangan aktivitas olahraga.
 
 Phase 3 – Workout Discovery & Social Features
-Mengembangkan fitur komunitas yang memungkinkan pengguna menemukan program latihan dari pengguna lain, khususnya Personal Trainer, Athlete, dan Fitness Creator.
+Mengembangkan fitur komunitas yang memungkinkan user menemukan program latihan dari user lain, khususnya Personal Trainer, Athlete, dan Fitness Creator.
 Fitur yang direncanakan:
-Explore untuk menemukan Workout Plan.
-Membagikan Workout Plan kepada pengguna lain.
-Fitur Copy Plan untuk menyalin dan menyesuaikan program latihan.
-Membuat postingan mengenai aktivitas olahraga.
-Interaksi sosial melalui Like, Comment, dan Follow.
-Sistem verifikasi akun untuk Trainer, Athlete, dan Creator.
+1. Explore untuk menemukan Workout Plan.
+2. Membagikan Workout Plan kepada user lain.
+3. Fitur Copy Plan untuk menyalin dan menyesuaikan program latihan.
+4. Membuat postingan mengenai aktivitas olahraga.
+5. Interaksi sosial melalui Like, Comment, dan Follow.
+6. Sistem verifikasi akun untuk Trainer, Athlete, dan Creator.
 
 Phase 4 – Personalization & AI Integration
-Mengembangkan sistem rekomendasi latihan yang lebih personal berdasarkan profil, kebutuhan, dan aktivitas pengguna.
+Mengembangkan sistem rekomendasi latihan yang lebih personal berdasarkan profil, kebutuhan, dan aktivitas user.
 Fitur yang direncanakan:
-Menentukan tujuan latihan seperti Build Muscle, Lose Fat, dan Get Stronger.
-Menentukan Experience Level pengguna.
-Mengatur frekuensi dan durasi latihan.
-Menentukan peralatan olahraga yang tersedia.
-Memberikan rekomendasi Workout Plan berdasarkan preferensi pengguna.
-Mengembangkan AI untuk memberikan rekomendasi latihan yang lebih personal berdasarkan profil dan riwayat aktivitas.
+1. Menentukan tujuan latihan seperti Build Muscle, Lose Fat, dan Get Stronger.
+2. Menentukan Experience Level user.
+3. Mengatur frekuensi dan durasi latihan.
+4. Menentukan peralatan olahraga yang tersedia.
+5. Memberikan rekomendasi Workout Plan berdasarkan preferensi user.
+6. Mengembangkan AI untuk memberikan rekomendasi latihan yang lebih personal berdasarkan profil dan riwayat aktivitas.
 
 Phase 5 – Fitness Ecosystem Expansion
 Mengembangkan aplikasi menjadi ekosistem kebugaran yang lebih lengkap dengan menghubungkan fitur Planner, Social, dan Creator.
 Pengembangan lanjutan meliputi:
-Pengembangan profil dan portofolio Fitness Creator.
-Sistem publikasi program latihan dari Trainer dan Athlete.
-Peningkatan sistem komunitas dan interaksi pengguna.
-Pengembangan fitur komunikasi antar pengguna.
-Personalisasi pengalaman pengguna berdasarkan aktivitas dan preferensi.
+1. Pengembangan profil dan portofolio Fitness Creator.
+2. Sistem publikasi program latihan dari Trainer dan Athlete.
+3. Peningkatan sistem komunitas dan interaksi pengguna.
+4. Pengembangan fitur komunikasi antar pengguna.
+5. Personalisasi pengalaman pengguna berdasarkan aktivitas dan preferensi.

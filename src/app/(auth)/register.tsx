@@ -1,6 +1,7 @@
+import AppButton from '@/components/AppButton';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -75,17 +76,11 @@ export default function RegisterScreen() {
         editable={!loading}
       />
 
-      <Pressable
-        style={[styles.button, loading && styles.buttonDisabled]}
+      <AppButton
+        title="Register"
         onPress={handleRegister}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Register</Text>
-        )}
-      </Pressable>
+        loading={loading}
+      />
     </View>
   );
 }

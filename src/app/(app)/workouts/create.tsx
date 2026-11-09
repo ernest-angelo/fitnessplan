@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { router } from 'expo-router';
+import { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
+  ActivityIndicator,
   Pressable,
   ScrollView,
-  ActivityIndicator,
   StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
-import { router } from 'expo-router';
-import { supabase } from '@/lib/supabase';
 
 // Valid enum values that must match the database schema.
 const GOAL_OPTIONS = [
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#111',
+    color: '#000000ff',
     marginBottom: 20,
   },
   fieldGroup: {
@@ -255,8 +255,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   optionChipSelected: {
-    backgroundColor: '#007bff',
-    borderColor: '#007bff',
+    backgroundColor: '#000000ff',
+    borderColor: '#000000ff',
   },
   optionChipText: {
     fontSize: 13,
@@ -268,14 +268,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   saveButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#000000ff',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 8,
   },
   saveButtonDisabled: {
-    backgroundColor: '#a0c4ff',
+    backgroundColor: '#000000ff',
   },
   saveButtonText: {
     color: '#fff',

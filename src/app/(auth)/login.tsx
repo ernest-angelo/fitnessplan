@@ -1,6 +1,7 @@
+import AppButton from '@/components/AppButton';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -11,9 +12,18 @@ export default function LoginScreen() {
   // Semua autentikasi database sudah dihilangkan
   const handleLogin = async () => {
     if (loading) return;
-
     setErrorMessage('');
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage('Email and password are required.');
+      return;
+    }
+
+    if (!email.includes('@')) {
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
     setLoading(true);
+
 
     try {
       // Skip autentikasi Supabase
@@ -58,17 +68,11 @@ export default function LoginScreen() {
         editable={!loading}
       />
 
-      <Pressable
-        style={[styles.button, loading && styles.buttonDisabled]}
+      <AppButton
+        title="Login"
         onPress={handleLogin}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Login</Text>
-        )}
-      </Pressable>
+        loading={loading}
+      />
     </View>
   );
 }
@@ -93,20 +97,6 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 16,
     borderRadius: 8,
-  },
-  button: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonDisabled: {
-    backgroundColor: '#a0c4ff',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
   },
   error: {
     color: 'red',

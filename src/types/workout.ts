@@ -27,6 +27,7 @@ export type WorkoutPlan = {
   goal: string | null;
   difficulty: string | null;
   visibility: string | null;
+  icon: string;
   workout_plan_days?: WorkoutPlanDay[];
 };
 
