@@ -19,8 +19,8 @@ export default function LoginScreen() {
       // Skip autentikasi Supabase
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Routing langsung ke profile
-      router.replace('/(app)/profile');
+      // Routing langsung ke tabs
+      router.replace('/(tabs)');
 
     } catch (e) {
       console.error('Navigation error:', e);

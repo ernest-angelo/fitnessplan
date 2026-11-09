@@ -156,7 +156,7 @@ export default function ProfileScreen() {
 
       <Pressable
         style={styles.workoutsButton}
-        onPress={() => router.push('/(app)/workouts')}
+        onPress={() => router.push('/(tabs)/workout')}
       >
         <Text style={styles.workoutsButtonText}>
           My Workouts
