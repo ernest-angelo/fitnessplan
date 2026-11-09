@@ -20,6 +20,23 @@ export default function RegisterScreen() {
 selain itu ada juga component bawaan dari react native seperti view, text, dan lainnya 
  <View style={styles.container}>
       <Text style={styles.title}>Register</Text>
+      
+Penjelasan Props dan State + contoh dari code sendiri
+Props merupakan data yang dikirimkan dari komponen induk (parent) ke komponen anak (child). Props digunakan untuk membuat komponen lebih fleksibel.
+State merupakan data internal komponen yang dapat berubah selama aplikasi berjalan. React menyediakan useState untuk mengelola state.
+Contoh disini saya ambil dari (auth)/register.tsx dan disini props and state ada dalam functional component yang saya buat
+export default function RegisterScreen() {
+  const [email, setEmail] = useState(''); // Menyimpan email yang diketik pengguna
+  const [password, setPassword] = useState(''); // Menyimpan password yang diketik pengguna
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+        keyboardType="email-address"
+        editable={!loading}
+      />
 
-
-
+State = Data yang disimpan aplikasi. Contohnya email dan password yang diketik pengguna. 
+Props = Informasi yang diberikan kepada component. Contohnya tulisan "Email" yang diberikan kepada TextInput.
