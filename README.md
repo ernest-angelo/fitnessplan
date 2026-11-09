@@ -13,3 +13,13 @@ Cross-platform Development: Developer dapat mengembangkan aplikasi Android dan i
 Reusable Components: Komponen antarmuka dapat digunakan kembali pada berbagai halaman sehingga kode lebih konsisten dan mudah di manage.
 
 Fast Development: React Native mendukung Fast Refresh sehingga developer dapat melihat perubahan kode dengan cepat tanpa harus selalu membangun ulang aplikasi dari awal. Jadi pada saat development jika terjadi error dapat diperbaiki secara langsung sehingga tidak diperlukan membangun ulang aplikasi dari awal
+
+Penjelasan component dan contoh dari code sendiri
+Component merupakan bagian terkecil dari antarmuka aplikasi yang dapat digunakan kembali. Dalam aplikasi yang sedang saya develop contoh code saya ambil dari (auth)/register.tsx yaitu functional component
+export default function RegisterScreen() {
+selain itu ada juga component bawaan dari react native seperti view, text, dan lainnya 
+ <View style={styles.container}>
+      <Text style={styles.title}>Register</Text>
+
+
+
