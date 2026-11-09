@@ -9,42 +9,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import { router, useLocalSearchParams, useFocusEffect } from 'expo-router';
-import { supabase } from '@/lib/supabase';
-import { ensureInProgressSession } from '@/lib/workout-session';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type Exercise = {
-  id: string;
-  name: string;
-};
-
-type WorkoutExercise = {
-  id: string;
-  exercise_id: string;
-  target_sets: number;
-  target_reps: number;
-  rest_seconds: number;
-  notes: string | null;
-  exercises: Exercise;
-};
-
-type WorkoutPlanDay = {
-  id: string;
-  name: string;
-  day_number: number;
-  workout_exercises: WorkoutExercise[];
-};
-
-type WorkoutPlan = {
-  id: string;
-  name: string;
-  description: string | null;
-  goal: string | null;
-  difficulty: string | null;
-  visibility: string | null;
-  workout_plan_days: WorkoutPlanDay[];
-};
+import { PlanDummy } from '@/data/workout';
+import type { WorkoutPlan, WorkoutPlanDay } from '@/types/workout';
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -69,50 +35,11 @@ export default function PlanDetailsScreen() {
       setLoading(true);
       setError('');
 
-      const { data, error: fetchError } = await supabase
-        .from('workout_plans')
-        .select(
-          `id, name, description, goal, difficulty, visibility,
-           workout_plan_days (
-             id, name, day_number,
-             workout_exercises (
-               id, exercise_id, target_sets, target_reps, rest_seconds, notes,
-               exercises ( id, name )
-             )
-           )`
-        )
-        .eq('id', id)
-        .order('day_number', { referencedTable: 'workout_plan_days', ascending: true })
-        .single();
-
-      if (fetchError) {
-        setError(fetchError.message || 'Failed to load plan.');
+      const foundPlan = PlanDummy.find((p) => p.id === id) || null;
+      if (!foundPlan) {
+        setError('Workout plan not found.');
       } else {
-        setPlan(data as unknown as WorkoutPlan);
-      }
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUserId(user?.id ?? null);
-
-      if (user) {
-        const { data: activeSessions, error: sessionError } = await supabase
-          .from('workout_sessions')
-          .select('id, workout_day_id')
-          .eq('user_id', user.id)
-          .eq('workout_plan_id', id)
-          .eq('status', 'IN_PROGRESS');
-
-        if (sessionError) {
-          console.error(sessionError);
-        } else {
-          const map: Record<string, string> = {};
-          for (const row of activeSessions ?? []) {
-            map[row.workout_day_id as string] = row.id as string;
-          }
-          setInProgressByDay(map);
-        }
+        setPlan(foundPlan);
       }
     } catch {
       setError('An unexpected error occurred.');
@@ -141,102 +68,17 @@ export default function PlanDetailsScreen() {
   };
 
   const confirmDeletePlan = async () => {
-    try {
-      // Single delete — FK cascade removes workout_plan_days and workout_exercises.
-      const { error: deleteError } = await supabase
-        .from('workout_plans')
-        .delete()
-        .eq('id', id);
-
-      if (deleteError) {
-        Alert.alert('Error', deleteError.message || 'Failed to delete plan.');
-        return;
-      }
-
-      router.replace('/(app)/workouts');
-    } catch {
-      Alert.alert('Error', 'An unexpected error occurred.');
-    }
+    Alert.alert('Info', 'Plan deleted (Prototype simulation).', [
+      { text: 'OK', onPress: () => router.replace('/(tabs)/workout') },
+    ]);
   };
 
   const handleCopyPlan = async () => {
-    try {
-      setCopyLoading(true);
-      const authRes = await supabase.auth.getUser();
-      const user = authRes.data.user;
-      if (!user) {
-        Alert.alert('Error', 'You must be logged in to copy a plan.');
-        setCopyLoading(false);
-        return;
-      }
-      // Create new plan
-      const { data: newPlan, error: planError } = await supabase
-        .from('workout_plans')
-        .insert([
-          {
-            source_plan_id: plan.id,
-            owner_id: user.id,
-            name: `${plan.name} (Copy)`,
-            description: plan.description,
-            goal: plan.goal,
-            difficulty: plan.difficulty,
-            visibility: 'PRIVATE',
-          },
-        ])
-        .select('id')
-        .single();
-      if (planError) throw planError;
-      const newPlanId = newPlan.id;
-
-      // Map old day IDs to new day IDs
-      const dayIdMap = {};
-      for (const day of plan.workout_plan_days ?? []) {
-        const { data: newDay, error: dayError } = await supabase
-          .from('workout_plan_days')
-          .insert([
-            {
-              workout_plan_id: newPlanId,
-              name: day.name,
-              day_number: day.day_number,
-            },
-          ])
-          .select('id')
-          .single();
-        if (dayError) throw dayError;
-        dayIdMap[day.id] = newDay.id;
-        // Copy exercises for this day
-        const exercises = day.workout_exercises ?? [];
-        for (const we of exercises) {
-          const { error: exError } = await supabase
-            .from('workout_exercises')
-            .insert([
-              {
-                day_id: newDay.id,
-                exercise_id: we.exercise_id,
-                order_index: we.order_index,
-                target_sets: we.target_sets,
-                target_reps: we.target_reps,
-                rest_seconds: we.rest_seconds,
-                notes: we.notes,
-              },
-            ]);
-          if (exError) throw exError;
-        }
-      }
-
-      Alert.alert('Success', 'Plan copied successfully.', [
-        { text: 'OK', onPress: () => router.replace(`/(app)/workouts/${newPlanId}`) },
-      ]);
-    } catch (e) {
-      console.error(e);
-      Alert.alert('Error', e?.message || 'Failed to copy plan.');
-      // Cleanup partially created plan if exists
-      if (newPlan?.id) {
-        await supabase.from('workout_plans').delete().eq('id', newPlan.id);
-      }
-    } finally {
+    setCopyLoading(true);
+    setTimeout(() => {
       setCopyLoading(false);
-    }
+      Alert.alert('Success', 'Plan copied successfully (Prototype simulation).');
+    }, 400);
   };
 
   // ── Delete Exercise ─────────────────────────────────────────────────────────
@@ -264,44 +106,11 @@ export default function PlanDetailsScreen() {
       return;
     }
 
-    setStartingDayId(day.id);
-
-    try {
-      const { session, error: startError } = await ensureInProgressSession(id, day.id);
-      if (startError || !session) {
-        Alert.alert('Unable to start workout', startError || 'Please try again.');
-        return;
-      }
-
-      router.push(
-        `/(app)/workouts/${id}/day/${day.id}/workout?session_id=${session.id}`
-      );
-    } catch (err) {
-      console.error(err);
-      Alert.alert('Unable to start workout', 'An unexpected error occurred.');
-    } finally {
-      setStartingDayId(null);
-    }
+    Alert.alert('Start Workout', `Memulai sesi latihan untuk ${day.name} (Prototype simulation).`);
   };
 
   const confirmDeleteExercise = async (workoutExerciseId: string) => {
-    try {
-      // Delete only from workout_exercises — never touches the exercises catalog.
-      const { error: deleteError } = await supabase
-        .from('workout_exercises')
-        .delete()
-        .eq('id', workoutExerciseId);
-
-      if (deleteError) {
-        Alert.alert('Error', deleteError.message || 'Failed to remove exercise.');
-        return;
-      }
-
-      // Refresh the plan to reflect the removal.
-      fetchPlan();
-    } catch {
-      Alert.alert('Error', 'An unexpected error occurred.');
-    }
+    Alert.alert('Info', 'Exercise removed (Prototype simulation).');
   };
 
   // ── Render states ───────────────────────────────────────────────────────────
@@ -366,11 +175,6 @@ export default function PlanDetailsScreen() {
           <Pressable style={styles.deletePlanButton} onPress={handleDeletePlan}>
             <Text style={styles.deletePlanButtonText}>Delete Plan</Text>
           </Pressable>
-          {plan.visibility === 'PUBLIC' && plan.owner_id !== userId && (
-            <Pressable style={styles.copyPlanButton} onPress={handleCopyPlan} disabled={copyLoading}>
-              <Text style={styles.copyPlanButtonText}>Copy Plan</Text>
-            </Pressable>
-          )}
         </View>
       </View>
 

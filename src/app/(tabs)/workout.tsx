@@ -7,43 +7,8 @@ import {
   Text,
   View,
 } from 'react-native';
-
-type WorkoutPlan = {
-  id: string;
-  name: string;
-  description: string | null;
-  goal: string | null;
-  difficulty: string | null;
-  visibility: string | null;
-};
-
-// Static mock data untuk workout plan
-const PlanDummy: WorkoutPlan[] = [
-  {
-    id: 'plan_1',
-    name: 'Full Body Workout',
-    description: '3-day full body workout routine for general fitness and building strength.',
-    goal: 'General Fitness',
-    difficulty: 'Beginner',
-    visibility: 'private',
-  },
-  {
-    id: 'plan_2',
-    name: 'Upper Lower Split',
-    description: '4-day split routine focusing on progressive overload and hypertrophy.',
-    goal: 'Muscle Building',
-    difficulty: 'Intermediate',
-    visibility: 'private',
-  },
-  {
-    id: 'plan_3',
-    name: 'Push Pull Legs (PPL)',
-    description: '6-day high frequency split targeting muscle groups systematically.',
-    goal: 'Strength & Hypertrophy',
-    difficulty: 'Advanced',
-    visibility: 'private',
-  },
-];
+import { PlanDummy } from '@/data/workout';
+import type { WorkoutPlan } from '@/types/workout';
 
 export default function WorkoutTabScreen() {
   const [plans] = useState<WorkoutPlan[]>(PlanDummy);
@@ -189,4 +154,3 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
-

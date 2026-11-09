@@ -1,36 +1,10 @@
 import type { Profile } from '@/types/db';
-import { AccountStatus, EquipmentType, ExperienceLevel, FitnessGoal } from '@/types/db';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-
-
-const DummyData: Profile = {
-  id: 'ernest.angelo01',
-  username: 'ernestangelo',
-  display_name: 'ernest',
-  bio: 'Hallo nama saya ernest',
-  avatar_url: null,
-  age: 20,
-  height: 183,
-  weight: 88,
-  experience_level: ExperienceLevel.ADVANCED,
-  goal: FitnessGoal.GENERAL_FITNESS,
-  workout_days_per_week: 5,
-  workout_duration_min: 90,
-  equipment: [
-    EquipmentType.BARBELL,
-    EquipmentType.DUMBBELL,
-    EquipmentType.BODYWEIGHT,
-  ],
-  account_status: AccountStatus.ACTIVE,
-  created_at: '2026-09-01T00:00:00.000Z',
-  updated_at: '2026-11-01T00:00:00.000Z',
-};
-
+import { DummyProfile } from '@/data/profile';
 
 export default function ProfileScreen() {
-
-  const profile: Profile | null = DummyData;
+  const profile: Profile | null = DummyProfile;
   if (!profile) {
     return (
       <View style={styles.centerContainer}>
