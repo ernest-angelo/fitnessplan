@@ -40,3 +40,9 @@ export default function RegisterScreen() {
 
 State = Data yang disimpan aplikasi. Contohnya email dan password yang diketik pengguna. 
 Props = Informasi yang diberikan kepada component. Contohnya tulisan "Email" yang diberikan kepada TextInput.
+
+Penjelasan Navigation dan contoh dari code sendiri
+Navigation merupakan mekanisme atau sistem perpindahan antarhalaman dalam aplikasi. Setiap file halaman di dalam direktori app dapat menjadi sebuah route. Navigasi dapat dilakukan menggunakan router.push() atau router.replace untuk membuka halaman lain.
+Contoh disini saya ambil dari (auth)/register.tsx
+router.replace('/(tabs)');
+Kenapa saya menggunakan router.replace sedangkan router.push karena Router.replace lebih cocok untuk perpindahan dari page register/login ke home page karena dengan menggunakan router.replace pengguna tidak bisa kembali ke halaman sebelumnya menggunakan tombol Back browser karena halaman tersebut sudah ditimpa/dihapus dari riwayat sedangkan jika menggunakan router.push pengguna dapat menggunakan tombol back browser lalu kembali ke halaman sebelumnya
