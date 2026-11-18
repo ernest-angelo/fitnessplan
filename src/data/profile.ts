@@ -5,7 +5,7 @@ export const DummyProfile: Profile = {
   id: 'ernest.angelo01',
   username: 'ernestangelo',
   display_name: 'Ernest Angelo',
-  bio: 'Halo, saya antusias dengan fitness dan latihan kekuatan.',
+  bio: 'Halo, saya suka pergi ke gym.',
   avatar_url: null,
   age: 20,
   height: 183,
@@ -20,7 +20,6 @@ export const DummyProfile: Profile = {
     EquipmentType.BODYWEIGHT,
   ],
   account_status: AccountStatus.ACTIVE,
-  created_at: '2026-09-01T00:00:00.000Z',
-  updated_at: '2026-11-01T00:00:00.000Z',
+  created_at: '2026-09-01',
+  updated_at: '2026-11-01',
 };
-

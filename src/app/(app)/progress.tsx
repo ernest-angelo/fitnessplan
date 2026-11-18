@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
-import dayjs from 'dayjs';
 import { DummyProgress } from '@/data/progress';
 import type { ProgressStats, RecentWorkout } from '@/types/progress';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-// Helper to format duration seconds into human friendly string
+// untuk timer
 const formatDuration = (seconds: number) => {
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);

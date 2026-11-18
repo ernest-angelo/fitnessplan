@@ -1,7 +1,7 @@
+import { DummyProfile } from '@/data/profile';
 import type { Profile } from '@/types/db';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { DummyProfile } from '@/data/profile';
 
 export default function ProfileScreen() {
   const profile: Profile | null = DummyProfile;
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
 
   setupButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#000000ff',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',

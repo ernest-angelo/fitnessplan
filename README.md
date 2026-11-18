@@ -1,3 +1,7 @@
+Tautan Video Demo = https://drive.google.com/drive/folders/1PQUAv3S4SdRmQUevxO3AWVRJ7o0F4-oi?usp=sharing
+Nama Apps = StayFit
+Tema  = Health specified ke Gym
+
 
 Penjelasan Konsep: di README, 300–500 kata. Jelaskan cara kerja React Native, minimal 
 3 keunggulannya untuk aplikasi hybrid, serta komponen, props, state, dan navigasi dengan contoh kode 
